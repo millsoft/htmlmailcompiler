@@ -1,3 +1,6 @@
+![HTML Mail Compiler](https://raw.githubusercontent.com/millsoft/htmlmailcompiler/master/example/src/img/htmlmailcompiler-logo.png)
+
+
 # HTML Mail Compiler
 
 HTML Mail Compiler is a tool that will inject inline CSS styles into your html template and output compiled html as a file. It uses [emogrifier](https://github.com/jjriv/emogrifier) library for the merge process.
@@ -5,7 +8,7 @@ HTML Mail Compiler is a tool that will inject inline CSS styles into your html t
 ## How to use it?
 To create a HTML template you normally used to create a new HTML file and work on it. Now you create a PHP file with your usual stuff in it and put the `link` Tag to include your CSS file. You also need to put a `compile.json` file into your folder. In that file you specify how the tool should generate the final HTML template.
 
-Please see the example folder for an exaample. The source files are stored in `example/src` and after generation your files are stored in `example/dist`
+Please see the example folder for an example. The source files are stored in `example/src` and after generation your files are stored in `example/dist`
 
 ## Code Example
 

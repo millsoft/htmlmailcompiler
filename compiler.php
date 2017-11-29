@@ -9,7 +9,7 @@ ini_set('display_errors', 1);
  *   https://github.com/millsoft/htmlmailcompiler
  */
 
-$autoload_file = "vendor/autoload.php";
+$autoload_file = __DIR__ . "/vendor/autoload.php";
 if (!file_exists($autoload_file)) {
     die("Composer autoload file not found. Please execute 'composer install' to install all dependencies.");
 }
