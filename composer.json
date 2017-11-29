@@ -1,0 +1,16 @@
+{
+    "name": "millsoft/htmlmailcompiler",
+    "description": "HTML Mail Compiler",
+    "type": "project",
+    "require": {
+        "pelago/emogrifier": "^1.2"
+    },
+    "authors": [
+        {
+            "name": "Michael Milawski",
+            "email": "mm@millsoft.de",
+            "homepage" : "https://www.milmike.com",
+            "role": "Developer"
+        }
+    ]
+}

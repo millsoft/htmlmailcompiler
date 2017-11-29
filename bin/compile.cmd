@@ -1,0 +1,1 @@
+php ../compiler.php ../harman\weihnachten_2017 %*

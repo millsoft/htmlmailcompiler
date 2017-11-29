@@ -1,0 +1,19 @@
+{
+  "template_file": "template.php",
+  "css_file": "style.css",
+  "generate": [
+    "template_cool.html",
+    "template_awesome.html",
+    "template_yeah.html"
+  ],
+  "output_dir": "../dist",
+  "zip": {
+    "filename": "compiled_templates.zip",
+    "files": [
+      "template_cool.html",
+      "template_awesome.html",
+      "template_yeah.html",
+      "img/php-logo.jpg"
+    ]
+  }
+}

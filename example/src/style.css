@@ -1,0 +1,28 @@
+body{
+    font-family:Arial;
+}
+
+h1{
+    color:green;
+}
+
+.included h1{
+    color:red;
+}
+
+.foo{
+    background: #f5f5f5;
+    padding:10px;
+    border:1px solid gray;
+}
+.foo p{
+    font-weight:bold;
+}
+
+li{
+    font-size:18px;
+}
+
+span.but{
+    color:silver;
+}
