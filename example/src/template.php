@@ -7,7 +7,10 @@
 
     <title>Example</title>
     <link rel="stylesheet" href="style.css">
+    
+    <!-- DEVELOPED_BY -->
     <!-- HEAD_INFO -->
+    
 </head>
 <body>
 

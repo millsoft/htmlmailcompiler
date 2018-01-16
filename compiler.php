@@ -5,7 +5,7 @@ ini_set('display_errors', 1);
 
 /**
  *    HTML E-Mail Compiler
- *    by Michael Milawski - 29.11.2017
+ *    by Michael Milawski - Last Update: 16.01.2018
  *   https://github.com/millsoft/htmlmailcompiler
  */
 
@@ -15,12 +15,13 @@ if (!file_exists($autoload_file)) {
 }
 
 require_once("vendor/autoload.php");
-$app_version = "0.0.2";
+$app_version = "0.0.3";
 
 class HtmlCompiler
 {
 
     static $SettingsFile = "compile.json";
+    static $settings = array();
 
     public static function run ($path = '')
     {
@@ -42,6 +43,7 @@ class HtmlCompiler
         }
 
         $settings = json_decode(file_get_contents($settingsFilePath), true);
+        self::$settings = $settings;
 
         $template_file = $path . "/" . $settings[ 'template_file' ];
         $css_file = $path . "/" . $settings[ 'css_file' ];
@@ -168,6 +170,9 @@ class HtmlCompiler
         $mergedHtml = preg_replace($re, '', $mergedHtml);
         $mergedHtml = str_ireplace("<!-- HEAD_INFO -->", self::getMetaInfo(), $mergedHtml);
 
+        $mergedHtml = self::processPlaceholders($mergedHtml);
+
+
         file_put_contents($save_as, $mergedHtml);
     }
 
@@ -179,11 +184,37 @@ class HtmlCompiler
     {
         $timestamp = date("Y-m-d H:i");
         $info = <<<INFO
-		<!-- Last update: $timestamp  -->
+        <!-- Last update: $timestamp  -->
 INFO;
 
         return $info;
     }
+
+
+    /**
+     * Process custom Placeholders
+     * @source string - html template
+     * @return string
+     */
+    private static function processPlaceholders ($source)
+    {
+        $settings = self::$settings;
+
+        if(!isset($settings['placeholders'])){
+            //no placeholders in json file found, return the unprocessed source code
+            return $source;
+        }
+
+        $placeholders = $settings['placeholders'];
+        foreach($placeholders as $placeholder => $replacement){
+            $source = str_replace($placeholder, $replacement, $source);
+        }
+
+        return $source;
+    }
+
+
+
 
     /**
      * Generate a ZIP file for all your files marked for export

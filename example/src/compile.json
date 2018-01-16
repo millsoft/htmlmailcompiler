@@ -6,6 +6,12 @@
     "template_awesome.html",
     "template_yeah.html"
   ],
+  "placeholders":
+    {
+      "DEVELOPED_BY": "Developed by Your Company",
+      "I_LIKE": "TURTLES"
+    }
+  ,
   "output_dir": "../dist",
   "zip": {
     "filename": "compiled_templates.zip",

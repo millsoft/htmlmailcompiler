@@ -35,6 +35,19 @@ Or using a Browser:
 `compiler.php?path=path_to_source_files`
 
 
+## Configuration file
+
+You need to create a `compile.json`  file first. Put it in your folder where you create your HTML E-Mail. The file can look like this:
+
+| key | value |
+|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| template_file | Your html template. Should be a php file, eg. "template.php" The file is a normal HTML file with linked CSS file |
+| css_file | Name of your CSS file. eg. "style.css" |
+| generate | an array of files to generate. The index of the array will be passed in the generation process and is available in the $nr variable |
+| placeholders | (object) - You can use placeholders which will be replaced with the values in this file. |
+| output_dir | Where should be the generated files be stored? eg. "../dist" |
+| zip | (object) settings for the ZIP file generation. Key "filename" is used for the output filename. Key "files" is an array of which files should be stored in the ZIP file. |
+
 ## Contributors
 
 You want to extend it? project is open for pull requests :)
