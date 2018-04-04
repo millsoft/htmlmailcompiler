@@ -55,4 +55,4 @@ You want to extend it? project is open for pull requests :)
 ## License
 
 Open Source License.  
-Developed by Michael Milawski // 29.11.2017
+Developed by MilMike // 29.11.2017 (https://www.milmike.com)
