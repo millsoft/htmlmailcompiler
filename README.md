@@ -56,3 +56,6 @@ You want to extend it? project is open for pull requests :)
 
 Open Source License.  
 Developed by MilMike // 29.11.2017 (https://www.milmike.com)
+
+## Further Reading
+More details about this project on my blog:  https://www.milmike.com/how-to-create-html-e-mail-templates
