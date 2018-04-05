@@ -144,8 +144,21 @@ class HtmlCompiler
             $errors[] = $html_file . " not found!";
         }
 
-        if (!file_exists($css_file)) {
-            $errors[] = $css_file . " not found!";
+        if(strpos($css_file, ',') !== false){
+            //user provided multiple CSS files separated by comma
+            $cf = explode(",", $css_file);
+            foreach($cf as $_current_css_file){
+                $all_css_files[] = trim($_current_css_file);
+            }
+
+        }else{
+            $all_css_files = [$css_file];
+        }
+
+        foreach($all_css_files as $_cssfile){
+            if (!file_exists($_cssfile)) {
+                $errors[] = $_cssfile . " not found!";
+            }
         }
 
         if (!empty($errors)) {
@@ -158,7 +171,10 @@ class HtmlCompiler
         $html_file_content = ob_get_clean();
 
         //$html_file_content = file_get_contents($html_file);
-        $css_file_content = file_get_contents($css_file);
+        $css_file_content = '';
+        foreach($all_css_files as $css_file){
+            $css_file_content .= file_get_contents($css_file) . "\n";
+        }
 
         $emogrifier->setHtml($html_file_content);
         $emogrifier->setCss($css_file_content);
