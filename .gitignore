@@ -3,3 +3,4 @@ compile.bat
 compile.sh
 vendor
 .idea
+.phpintel

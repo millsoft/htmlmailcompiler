@@ -20,7 +20,7 @@ $app_version = "0.0.3";
 class HtmlCompiler
 {
 
-    static $SettingsFile = "compile.json";
+    public static $SettingsFile = "compile.json";
     static $settings = array();
 
     public static function run ($path = '')
@@ -76,10 +76,13 @@ class HtmlCompiler
         }
 
 
-        foreach ($settings[ 'generate' ] as $nr => $output_file) {
+        $nr = isset($settings[ 'start_nr' ]) ? $settings[ 'start_nr' ] : 0;
+
+        foreach ($settings[ 'generate' ] as $n => $output_file) {
             echo "Compiling HTML template $output_file (nr: $nr)\n";
             $output_file = $outputDir . "/" . $output_file;
             self::compile($template_file, $css_file, $output_file, $nr);
+            $nr++;
         }
 
         if (isset($settings[ 'zip' ])) {
@@ -335,7 +338,26 @@ The path should contain the compile.json file with all the needed settings for c
 INFO;
         die();
     } else {
-        HtmlCompiler::run($argv[ 1 ]);
+
+        $lopts = array(
+            "config::",
+            "path::"
+        );
+        $options = getopt("o::", $lopts);
+
+        if(empty($options)){
+            $path = $argv[ 1 ];
+        }else{
+            $path = isset($options['path']) ? $options['path'] : getcwd();
+            $config_file = isset($options['config']) ? $options['config'] : null;
+        }
+
+        if($config_file !== null){
+            //set a different config file
+            HtmlCompiler::$SettingsFile = $config_file;
+        }
+
+        HtmlCompiler::run($path);
     }
 
 } else {
