@@ -5,7 +5,7 @@ ini_set('display_errors', 1);
 
 /**
  *    HTML E-Mail Compiler
- *    by Michael Milawski - Last Update: 16.01.2018
+ *    by Michael Milawski - Last Update: 16.08.2018
  *   https://github.com/millsoft/htmlmailcompiler
  */
 
@@ -15,14 +15,21 @@ if (!file_exists($autoload_file)) {
 }
 
 require_once("vendor/autoload.php");
-$app_version = "0.0.3";
+$app_version = "0.0.4";
 
 class HtmlCompiler
 {
 
     public static $SettingsFile = "compile.json";
     static $settings = array();
-
+	
+	
+	//Are we in CLI or in web?
+	public static function isCli(){
+		return php_sapi_name() === 'cli' ? true : false;
+	}
+	
+	
     public static function run ($path = '')
     {
         //check if the path exists and we can access it:
@@ -35,9 +42,14 @@ class HtmlCompiler
             die("The path seems to be invalid: $path");
         }
 
-
+		
+		//Switch to the path
+		chdir($path);
+		
         //does the settings file exist?
-        $settingsFilePath = $path . "/" . self::$SettingsFile;
+        //$settingsFilePath = $path . "/" . self::$SettingsFile;
+		$settingsFilePath = self::$SettingsFile;
+		
         if (!file_exists($settingsFilePath)) {
             die("Settings file " . self::$SettingsFile . " not found in " . $path);
         }
@@ -45,9 +57,14 @@ class HtmlCompiler
         $settings = json_decode(file_get_contents($settingsFilePath), true);
         self::$settings = $settings;
 
+		/*
         $template_file = $path . "/" . $settings[ 'template_file' ];
         $css_file = $path . "/" . $settings[ 'css_file' ];
+		*/
 
+		$template_file = $settings[ 'template_file' ];
+        $css_file = $settings[ 'css_file' ];
+		
         if (isset($settings[ 'output_dir' ])) {
             $outputDir = $path . "/" . $settings[ 'output_dir' ];
             if (!file_exists($outputDir)) {
@@ -80,17 +97,20 @@ class HtmlCompiler
 
         foreach ($settings[ 'generate' ] as $n => $output_file) {
             echo "Compiling HTML template $output_file (nr: $nr)\n";
-            $output_file = $outputDir . "/" . $output_file;
+            //$output_file = $outputDir . "/" . $output_file;
+			$output_file = $output_file;
+			
             self::compile($template_file, $css_file, $output_file, $nr);
             $nr++;
         }
 
+		$outputDir = '.';
         if (isset($settings[ 'zip' ])) {
             self::zip($settings[ 'zip' ], $outputDir);
         }
 
 
-        echo("DONE! :-)");
+        echo("DONE! :-) - " . date("Y-m-d H:i:s"));
 
     }
 
@@ -318,6 +338,11 @@ INFO;
     }
 }
 
+
+if(!HtmlCompiler::isCli()){
+	echo "<pre>";
+}
+
 $head = "Html Compiler V " . $app_version . " by Michael Milawski";
 
 if (php_sapi_name() === 'cli') {
@@ -369,4 +394,9 @@ INFO;
     }
 
 
+}
+
+
+if(!HtmlCompiler::isCli()){
+	echo "</pre>";
 }
