@@ -37,13 +37,14 @@ Or using a Browser:
 
 ## Configuration file
 
-You need to create a `compile.json`  file first. Put it in your folder where you create your HTML E-Mail. The file can look like this:
+You need to create a `compile.json`  file first (or look at the [example file](example/src/compile.json) ). Put it in your folder where you create your HTML E-Mail. The file can look like this:
 
 | key | value |
 |---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | template_file | Your html template. Should be a php file, eg. "template.php" The file is a normal HTML file with linked CSS file |
 | css_file | Name of your CSS file. eg. "style.css" |
 | start_nr | Start the index from this number (default: 0) |
+| minify | Minify the html file (default: false) |
 | generate | an array of files to generate. The index of the array will be passed in the generation process and is available in the $nr variable |
 | placeholders | (object) - You can use placeholders which will be replaced with the values in this file. |
 | output_dir | Where should be the generated files be stored? eg. "../dist" |

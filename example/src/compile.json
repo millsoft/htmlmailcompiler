@@ -1,6 +1,7 @@
 {
   "template_file": "template.php",
   "css_file": "style.css",
+  "minify" : false,
   "generate": [
     "template_cool.html",
     "template_awesome.html",

@@ -5,7 +5,7 @@ ini_set('display_errors', 1);
 
 /**
  *    HTML E-Mail Compiler
- *    by Michael Milawski - Last Update: 16.08.2018
+ *    by Michael Milawski - Last Update: 20.11.2018
  *   https://github.com/millsoft/htmlmailcompiler
  */
 
@@ -94,13 +94,24 @@ class HtmlCompiler
 
 
         $nr = isset($settings[ 'start_nr' ]) ? $settings[ 'start_nr' ] : 0;
+        $minify = isset($settings[ 'minify' ]) ? $settings[ 'minify' ] : false;
 
         foreach ($settings[ 'generate' ] as $n => $output_file) {
             echo "Compiling HTML template $output_file (nr: $nr)\n";
-            //$output_file = $outputDir . "/" . $output_file;
-			$output_file = $output_file;
-			
-            self::compile($template_file, $css_file, $output_file, $nr);
+
+            $output_file = $outputDir . "/" . $output_file;
+
+            //$html_file, $css_file, $save_as, $nr = 1
+
+            $params = array(
+                "html_file" => $template_file,
+                "css_file" => $css_file,
+                "save_as" => $output_file,
+                "nr" => $nr,
+                "minify" => $minify
+            );
+
+            self::compile($params);
             $nr++;
         }
 
@@ -111,6 +122,33 @@ class HtmlCompiler
 
 
         echo("DONE! :-) - " . date("Y-m-d H:i:s"));
+
+    }
+
+
+    /**
+     * Minify HTML code
+     * @param  string $html input html source code
+     * @return string       minified html
+     */
+    public static function minify($html){
+        $search = array(
+            '/\>[^\S ]+/s',     // strip whitespaces after tags, except space
+            '/[^\S ]+\</s',     // strip whitespaces before tags, except space
+            '/(\s)+/s',         // shorten multiple whitespace sequences
+            '/<!--(.|\s)*?-->/' // Remove HTML comments
+        );
+
+        $replace = array(
+            '>',
+            '<',
+            '\\1',
+            ''
+        );
+
+        $html = preg_replace($search, $replace, $html);
+
+        return $html;
 
     }
 
@@ -152,14 +190,17 @@ class HtmlCompiler
     /**
      * Compile
      *
-     * @param $html_file - html template
+     * @param $params - array all possible parameters
      * @param $css_file  - which CSS file to use?
      * @param $save_as   - save the generated file as..
      * @param int $nr    - this is available globally, you can use it in your template.php to generate various version
      *                   of your template.
      */
-    public static function compile ($html_file, $css_file, $save_as, $nr = 1)
+    //public static function compile ($html_file, $css_file, $save_as, $nr = 1)
+    public static function compile ($params)
     {
+        extract($params);
+
         $emogrifier = new \Pelago\Emogrifier();
         $errors = array();
 
@@ -208,9 +249,22 @@ class HtmlCompiler
         $re = '/<link.*>/';
         $mergedHtml = preg_replace($re, '', $mergedHtml);
         $mergedHtml = str_ireplace("<!-- HEAD_INFO -->", self::getMetaInfo(), $mergedHtml);
+        
+        $head_css_file = "css/head.css";
+        if(file_exists($head_css_file)){
+            $head_css_content = file_get_contents($head_css_file) . "\n";
+            $head_css = "<style>\n{$head_css_content}\n</style>";
+            $mergedHtml = str_ireplace("<!-- HEAD_CSS -->", $head_css, $mergedHtml);
+
+
+        }
 
         $mergedHtml = self::processPlaceholders($mergedHtml);
 
+        //Minify
+        if(isset($minify) && $minify === true){
+            $mergedHtml = self::minify($mergedHtml);
+        }
 
         file_put_contents($save_as, $mergedHtml);
     }

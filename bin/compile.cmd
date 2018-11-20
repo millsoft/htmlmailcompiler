@@ -1,1 +1,1 @@
-php ../compiler.php ../harman\weihnachten_2017 %*
+php d:/dev/apps/htmlmailcompiler/compiler.php %*
