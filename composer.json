@@ -1,16 +1,23 @@
 {
     "name": "millsoft/htmlmailcompiler",
     "description": "HTML Mail Compiler",
+    "version": "1.0.0",
     "type": "project",
+    "keywords": [
+        "htmlcompiler", "htmlmail", "htmlemail", "htmlmailcompiler", "html mail compiler", "html email", "inline css", "bulletproof html email"
+    ],
     "require": {
-        "pelago/emogrifier": "^1.2"
+        "pelago/emogrifier": "^2.1",
+        "league/climate": "^3.4"
     },
-    "authors": [
-        {
-            "name": "Michael Milawski",
-            "email": "mm@millsoft.de",
-            "homepage" : "https://www.milmike.com",
-            "role": "Developer"
-        }
-    ]
+    "bin": ["bin/hmc"],
+    "autoload": {
+        "classmap": ["src/"]
+    },
+    "authors": [{
+        "name": "Michael Milawski",
+        "email": "mmilawski@gmail.com",
+        "homepage": "https://www.milmike.com",
+        "role": "Developer"
+    }]
 }

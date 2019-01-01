@@ -1,1 +1,0 @@
-php d:/dev/apps/htmlmailcompiler/compiler.php %*

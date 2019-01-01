@@ -1,18 +1,17 @@
 {
   "template_file": "template.php",
-  "css_file": "style.css",
-  "minify" : false,
+  "css_file": ["style.css"],
+  "minify": false,
   "generate": [
     "template_cool.html",
     "template_awesome.html",
     "template_yeah.html"
   ],
-  "placeholders":
-    {
-      "DEVELOPED_BY": "Developed by Your Company",
-      "I_LIKE": "TURTLES"
-    }
-  ,
+  "placeholders": {
+    "DEVELOPED_BY": "Developed by Your Company",
+    "I_LIKE": "PIZZA",
+    "PLACEHOLDER_EXAMPLE": "This text was specified in the compile.json file"
+  },
   "output_dir": "../dist",
   "zip": {
     "filename": "compiled_templates.zip",
@@ -20,7 +19,7 @@
       "template_cool.html",
       "template_awesome.html",
       "template_yeah.html",
-      "img/php-logo.jpg"
+      "img/htmlmailcompiler-logo.png"
     ]
   }
 }

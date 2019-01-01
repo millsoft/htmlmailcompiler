@@ -33,7 +33,7 @@
         </li>
 
         <li>
-            It works with a simple JSON where you put all your configuration for the compilation.
+            It works with a simple JSON where you put all your configuration for the compilation. You can also use placeholders from your JSON here: PLACEHOLDER_EXAMPLE
         </li>
 
     </ul>
