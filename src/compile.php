@@ -10,14 +10,21 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-$app_version = "1.0.0";
+$app_version = "1.0.1";
 
-$autoload_file = __DIR__ . "/../vendor/autoload.php";
-if (!file_exists($autoload_file)) {
-    throw new Exception("Composer autoload not found.");
+$autoload_file        = __DIR__ . "/../vendor/autoload.php";
+$autoload_file_global = __DIR__ . "/../../../autoload.php";
+
+if (file_exists($autoload_file_global)) {
+    //this script is installed in the composer installation
+    require_once $autoload_file_global;
+} else {
+    if (!file_exists($autoload_file)) {
+        throw new Exception("Composer autoload not found.");
+    }
+    require_once $autoload_file;
+
 }
-
-require_once $autoload_file;
 
 $climate = new \League\CLImate\CLImate;
 
