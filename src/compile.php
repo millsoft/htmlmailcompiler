@@ -10,7 +10,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-$app_version = "1.1.0";
+$app_version = "1.1.2";
 
 $autoload_file        = __DIR__ . "/../vendor/autoload.php";
 $autoload_file_global = __DIR__ . "/../../../autoload.php";

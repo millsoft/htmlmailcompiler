@@ -1,7 +1,7 @@
 {
     "name": "millsoft/htmlmailcompiler",
     "description": "HTML Mail Compiler",
-    "version": "1.0.2",
+    "version": "1.1.2",
     "type": "project",
     "keywords": [
         "htmlcompiler", "htmlmail", "htmlemail", "htmlmailcompiler", "html mail compiler", "html email", "inline css", "bulletproof html email"
