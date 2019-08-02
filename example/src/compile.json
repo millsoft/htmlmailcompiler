@@ -16,10 +16,7 @@
   "zip": {
     "filename": "compiled_templates.zip",
     "files": [
-      "template_cool.html",
-      "template_awesome.html",
-      "template_yeah.html",
-      "img/htmlmailcompiler-logo.png"
+      "readme.txt"
     ]
   }
 }

@@ -15,6 +15,25 @@ class HtmlCompiler
     //For output we use climate lib:
     static $climate = null;
 
+    //extracted files from rendered source:
+    public static $additionalFiles = [];
+
+    //selected path
+    static $path = null;
+
+    //Dir for generated files
+    static $outputDir = null;
+
+    //Set the working dir path:
+    private static function setPath($path = null){
+        if($path === null){
+            //restore path:
+            chdir(self::$path);
+        }else{
+            chdir($path);
+        }
+    }
+
     public static function run($path = '')
     {
 
@@ -30,7 +49,8 @@ class HtmlCompiler
         }
 
         //Switch to the path
-        chdir($path);
+        self::$path = $path;
+        self::setPath();
 
         //does the settings file exist?
         $settingsFilePath = self::$SettingsFile;
@@ -46,8 +66,10 @@ class HtmlCompiler
         $css_file      = $settings['css_file'];
 
         if (isset($settings['output_dir'])) {
-            $outputDir = $path . "/" . $settings['output_dir'];
+            $outputDir = $settings['output_dir'];
+            //die($outputDir);
             if (!file_exists($outputDir)) {
+                $d = realpath($outputDir);
                 $created = mkdir($outputDir);
                 if (!$created) {
                     self::writeLog("Could not create output dir", "error");
@@ -58,9 +80,11 @@ class HtmlCompiler
             $outputDir = $path;
         }
 
-        if ($outputDir != $path) {
+        self::$outputDir = $outputDir;
+
+        if (self::$outputDir != $path) {
             //copy static files to dist dir:
-            self::copyFilesToDist($settings['zip']['files'], $path, $outputDir);
+            self::copyFilesToDist($settings['zip']['files']);
         }
 
         //include own helper php file which will be always included and is available in your template . php file
@@ -138,30 +162,45 @@ class HtmlCompiler
      * Copy all files from Source to Dist
      *
      * @param $files     - array with file names
-     * @param $sourceDir - copy from where?
      * @param $outDir    - copy to where?
      */
-    private static function copyFilesToDist($files, $sourceDir, $outDir)
+    private static function copyFilesToDist($files, $outDir = null)
     {
+
+        if($outDir === null){
+            $outDir = self::$outputDir;
+        }
 
         self::writeLog("Copying Source Files to $outDir");
 
         foreach ($files as $file) {
+
+            $outFile    = $outDir . "/" . $file;
+            $sourceFile =  $file;
+
             if (strpos($file, '/') !== false) {
+                //copy from a subdirectory
+
                 $ex         = explode("/", $file);
                 $dir        = $ex[0];
                 $newPath    = $outDir . "/" . $dir;
-                $outFile    = $outDir . "/" . $file;
-                $sourceFile = $sourceDir . "/" . $file;
+
 
                 if (!file_exists($newPath)) {
                     mkdir($newPath);
                 }
 
+
                 if (file_exists($sourceFile)) {
                     copy($sourceFile, $outFile);
                 }
 
+            }else{
+                //copy from root of source path:
+
+                if (file_exists($sourceFile)) {
+                    copy($sourceFile, $outFile);
+                }                
             }
         }
 
@@ -224,6 +263,21 @@ class HtmlCompiler
         foreach ($all_css_files as $css_file) {
             $css_file_content .= file_get_contents($css_file) . "\n";
         }
+
+
+        //Extract local images to be put in zip file
+        $doc = new DOMDocument();
+        @$doc->loadHTML($html_file_content);
+        $tags = $doc->getElementsByTagName('img');
+        $images = [];
+        foreach ($tags as $tag) {
+            $img = $tag->getAttribute('src');
+            //if(substr($img, start))
+            if(!preg_match('/^http[s]?:/', $img)){
+                self::$additionalFiles[] =  $img;
+            }
+        }
+
 
         $emogrifier->setHtml($html_file_content);
         $emogrifier->setCss($css_file_content);
@@ -303,6 +357,17 @@ INFO;
         $zip_file = $path . '/' . $settings['filename'];
 
         $path = str_replace('\\', '/', $path);
+
+        if(!empty(self::$additionalFiles)){
+            self::copyFilesToDist(self::$additionalFiles);
+        }
+
+
+        //Merge all files from json, extracted, generated
+        $files = [];
+        $settings['files'] = array_merge($settings['files'], self::$additionalFiles);
+        $settings['files'] = array_merge($settings['files'], self::$settings['generate']);
+        $settings['files'] = array_unique($settings['files']);
 
         //generate file list:
         $files = array();

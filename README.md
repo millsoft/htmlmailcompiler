@@ -45,7 +45,7 @@ You need to create a `compile.json` file first (or look at the [example file](ex
 | generate      | an array of files to generate. The index of the array will be passed in the generation process and is available in the \$nr variable                                    |
 | placeholders  | (object) - You can use placeholders which will be replaced with the values in this file.                                                                                |
 | output_dir    | Where should be the generated files be stored? eg. "../dist". If not specified, the source directory will be used as target directory.                                  |
-| zip           | (object) settings for the ZIP file generation. Key "filename" is used for the output filename. Key "files" is an array of which files should be stored in the ZIP file. |
+| zip           | (object) settings for the ZIP file generation. Key "filename" is used for the output filename. Key "files" is an array of which additional files should be stored in the ZIP file. Local image assets will be automatically stored in the zip file|
 
 ## Parameters
 
@@ -63,7 +63,7 @@ You want to extend it? project is open for pull requests :)
 
 Open Source License.  
 Developed by MilMike // 29.11.2017 (https://www.milmike.com)
-Last Update: 01.01.2018 (Happy New Year!)
+Last Update: 02.08.2019
 
 ## Further Reading
 

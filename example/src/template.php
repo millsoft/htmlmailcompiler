@@ -15,6 +15,7 @@
 <body>
 
 <img src="img/htmlmailcompiler-logo.png" alt="">
+
 <h1>I am a simple html email</h1>
 
 <div class="foo">
